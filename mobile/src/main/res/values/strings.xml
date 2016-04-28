@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Flickr Search</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="search">Search</string>
+    <string name="search_input_hint">Type your search</string>
+
+    <string name="retry">Retry</string>
+</resources>
