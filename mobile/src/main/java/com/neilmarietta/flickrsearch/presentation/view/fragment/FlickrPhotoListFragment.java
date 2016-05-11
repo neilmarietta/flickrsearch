@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.neilmarietta.flickrsearch.FlickrSearchApplication;
@@ -27,6 +28,7 @@ import com.neilmarietta.flickrsearch.internal.di.component.DaggerPhotoSearchComp
 import com.neilmarietta.flickrsearch.presentation.model.FlickrPhoto;
 import com.neilmarietta.flickrsearch.presentation.presenter.FlickrPhotoListPresenter;
 import com.neilmarietta.flickrsearch.presentation.view.adapter.FlickrPhotoAdapter;
+import com.neilmarietta.flickrsearch.presentation.view.controller.ZoomImageViewController;
 import com.neilmarietta.flickrsearch.presentation.view.listener.EndlessRecyclerViewOnScrollListener;
 
 import java.util.List;
@@ -52,6 +54,8 @@ public class FlickrPhotoListFragment extends Fragment implements FlickrPhotoList
     private SearchRecentSuggestions mSearchRecentSuggestions;
 
     private Snackbar mCurrentSnackBar;
+
+    private ZoomImageViewController mZoomImageViewController;
 
     public FlickrPhotoListFragment() {
         setRetainInstance(true);
@@ -94,6 +98,7 @@ public class FlickrPhotoListFragment extends Fragment implements FlickrPhotoList
         View view = inflater.inflate(R.layout.fragment_photo_list, container, false);
         ButterKnife.bind(this, view);
         setupRecyclerView();
+        setupZoomImageViewController(view, (ImageView) view.findViewById(R.id.iv_expanded));
         return view;
     }
 
@@ -106,6 +111,18 @@ public class FlickrPhotoListFragment extends Fragment implements FlickrPhotoList
             @Override
             public void onLoadNextPage() {
                 mListPresenter.onLoadNextPhotosPage();
+            }
+        });
+    }
+
+    private void setupZoomImageViewController(@NonNull View container, @NonNull ImageView expandedView) {
+        mZoomImageViewController =
+                new ZoomImageViewController(container, expandedView,
+                        getResources().getInteger(android.R.integer.config_shortAnimTime));
+        mFlickrPhotoAdapter.setOnItemClickListener(new FlickrPhotoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, FlickrPhoto photo) {
+                mZoomImageViewController.zoomImageFromThumb(view, photo.getUrl());
             }
         });
     }

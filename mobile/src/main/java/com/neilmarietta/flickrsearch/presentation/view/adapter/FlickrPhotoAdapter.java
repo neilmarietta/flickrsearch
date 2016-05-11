@@ -20,6 +20,12 @@ import butterknife.ButterKnife;
 
 public class FlickrPhotoAdapter extends RecyclerView.Adapter<FlickrPhotoAdapter.FlickrPhotoViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClick(View view, FlickrPhoto photo);
+    }
+
+    private OnItemClickListener mListener;
+
     private final LayoutInflater mLayoutInflater;
 
     private List<FlickrPhoto> mFlickrPhotos = new ArrayList<>();
@@ -47,6 +53,10 @@ public class FlickrPhotoAdapter extends RecyclerView.Adapter<FlickrPhotoAdapter.
         notifyItemInserted(mFlickrPhotos.size() - 1);
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
     public ArrayList<FlickrPhoto> getPhotosCopy() {
         return new ArrayList<>(mFlickrPhotos);
     }
@@ -68,9 +78,17 @@ public class FlickrPhotoAdapter extends RecyclerView.Adapter<FlickrPhotoAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final FlickrPhotoViewHolder holder, final int position) {
-        final FlickrPhoto photo = mFlickrPhotos.get(position);
+    public void onBindViewHolder(final FlickrPhotoViewHolder holder, int position) {
+        final int adapterPosition = holder.getAdapterPosition();
+        final FlickrPhoto photo = mFlickrPhotos.get(adapterPosition);
         holder.title.setText(photo.getPhoto().getTitle());
+        holder.photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null)
+                    mListener.onItemClick(holder.photo, photo);
+            }
+        });
         renderPhoto(holder, photo);
     }
 
