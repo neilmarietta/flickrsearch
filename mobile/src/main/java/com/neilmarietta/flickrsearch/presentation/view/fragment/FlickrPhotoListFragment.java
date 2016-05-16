@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -30,6 +29,7 @@ import com.neilmarietta.flickrsearch.presentation.presenter.FlickrPhotoListPrese
 import com.neilmarietta.flickrsearch.presentation.view.adapter.FlickrPhotoAdapter;
 import com.neilmarietta.flickrsearch.presentation.view.controller.ZoomImageViewController;
 import com.neilmarietta.flickrsearch.presentation.view.listener.EndlessRecyclerViewOnScrollListener;
+import com.neilmarietta.flickrsearch.presentation.view.manager.ExtraPageGridLayoutManager;
 
 import java.util.List;
 
@@ -103,7 +103,7 @@ public class FlickrPhotoListFragment extends Fragment implements FlickrPhotoList
     }
 
     private void setupRecyclerView() {
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        final ExtraPageGridLayoutManager gridLayoutManager = new ExtraPageGridLayoutManager(getContext(), 3);
         mFlickrPhotoRecycledView.setLayoutManager(gridLayoutManager);
         mFlickrPhotoRecycledView.setAdapter(mFlickrPhotoAdapter);
         mFlickrPhotoRecycledView.setHasFixedSize(true);
